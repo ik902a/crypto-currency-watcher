@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS currencies (
+  `id` BIGINT NOT NULL,
+  `symbol` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`));
