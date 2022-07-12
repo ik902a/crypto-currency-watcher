@@ -2,6 +2,7 @@ package com.idfinance.task.service;
 
 import com.idfinance.task.dto.CurrencyDto;
 import com.idfinance.task.entity.Currency;
+import com.idfinance.task.mapper.CurrencyMapper;
 import com.idfinance.task.repository.CryptoCurrencyRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,17 +16,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class CryptoCurrencyService {
-    private CryptoCurrencyRepository repository;
-//    private ModelMapper modelMapper;
+    private final CryptoCurrencyRepository repository;
+    private final CurrencyMapper mapper;
 
     @Transactional
-    public List<Currency> find() {
+    public List<CurrencyDto> find() {
         log.info("Finding Currency in Service");
         List<Currency> currencyList = repository.findAll();
-//        List<CurrencyDto> currencyDtoList = currencyList.stream()
-//                .map(giftCertificate -> modelMapper.map(giftCertificate, CurrencyDto.class))
-//                .collect(Collectors.toList());
-        return currencyList;
+        List<CurrencyDto> currencyDtoList = currencyList.stream()
+                .map(currency -> mapper.toDto(currency))
+                .collect(Collectors.toList());
+        return currencyDtoList;
     }
 
 }

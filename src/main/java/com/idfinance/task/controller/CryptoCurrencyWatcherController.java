@@ -22,12 +22,12 @@ public class CryptoCurrencyWatcherController {
 
     @GetMapping("/currencies")
     @ResponseStatus(HttpStatus.OK)
-    public List<Currency> getAllCurrencies() {
+    public List<CurrencyDto> getAllCurrencies() {
         log.info("Finding all currencies");
 //        List<CurrencyDto> response = service.find();
 //        PageGiftCertificateResponse response = PageGiftCertificateResponse.valueOf(pageDto);
 
-        List<Currency> response = service.find();
+        List<CurrencyDto> response = service.find();
 
         return response;
     }
