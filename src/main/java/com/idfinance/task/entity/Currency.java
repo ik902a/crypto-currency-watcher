@@ -2,10 +2,7 @@ package com.idfinance.task.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +16,11 @@ import java.util.List;
 public class Currency {
     @Id
     @EqualsAndHashCode.Include
-    Long id;
-    String symbol;
-//    @OneToMany(
-//            fetch = FetchType.EAGER,
-//            mappedBy = "registryId",
-//            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    private List<Value> valueList = new ArrayList<>();
+    private Long id;
+    private String symbol;
+    @OneToMany(
+            mappedBy = "currency",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<Price> priceList = new ArrayList<>();
 }
