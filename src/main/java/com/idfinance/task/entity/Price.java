@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "prices")
@@ -19,7 +20,7 @@ public class Price {
     @EqualsAndHashCode.Include
     private Long id;
     private BigDecimal price;
-    private Instant updated;
+    private LocalDateTime updated;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "currency_id")
     private Currency currency;
