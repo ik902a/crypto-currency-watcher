@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "prices")
@@ -21,8 +23,12 @@ public class Price {
     private Long id;
     private BigDecimal price;
     private LocalDateTime updated;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
-
+    @OneToMany(
+            mappedBy = "price",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<User> userList = new ArrayList<>();
 }

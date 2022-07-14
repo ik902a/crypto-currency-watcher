@@ -2,6 +2,8 @@ package com.idfinance.task.controller;
 
 import com.idfinance.task.dto.CurrencyDto;
 import com.idfinance.task.dto.PriceDto;
+import com.idfinance.task.dto.UserDataDto;
+import com.idfinance.task.dto.UserDto;
 import com.idfinance.task.entity.Currency;
 import com.idfinance.task.service.CryptoCurrencyService;
 import lombok.AllArgsConstructor;
@@ -43,6 +45,14 @@ public class CryptoCurrencyWatcherController {
     public List<PriceDto> getAllPrices() {
         log.info("Finding all prices");
         List<PriceDto> response = service.findAllPrice();
+        return response;
+    }
+
+    @GetMapping("/currencies/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto notify(@Valid @RequestBody UserDataDto data) {
+        log.info("Finding price for currencies id={}", data.toString());
+        UserDto response = service.create(data);
         return response;
     }
 }

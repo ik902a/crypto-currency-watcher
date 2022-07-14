@@ -1,10 +1,9 @@
 package com.idfinance.task.repository;
 
-import com.idfinance.task.entity.Currency;
+import com.idfinance.task.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CurrencyRepository extends JpaRepository<Currency, Long> {
-    Currency findBySymbol(String symbol);
+public interface UserRepository extends JpaRepository<User, Long> {
 }

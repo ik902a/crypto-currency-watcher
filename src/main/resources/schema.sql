@@ -18,3 +18,14 @@ CREATE TABLE IF NOT EXISTS prices (
       REFERENCES currencies (`id`)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION);
+
+CREATE TABLE IF NOT EXISTS users (
+  `id` BIGINT NOT NULL,
+  `username` VARCHAR(45) NOT NULL,
+  `price_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`)
+  CONSTRAINT `price_id`
+        FOREIGN KEY (`price_id`)
+        REFERENCES prices (`id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION);
