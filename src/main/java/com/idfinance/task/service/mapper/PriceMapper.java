@@ -1,4 +1,4 @@
-package com.idfinance.task.mapper;
+package com.idfinance.task.service.mapper;
 
 import com.idfinance.task.dto.PriceDto;
 import com.idfinance.task.entity.Price;
