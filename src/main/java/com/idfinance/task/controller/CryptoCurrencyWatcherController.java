@@ -21,14 +21,6 @@ import java.util.List;
 @RestController
 public class CryptoCurrencyWatcherController {
     private CryptoCurrencyService service;
-    // Method for my testing
-//    @GetMapping("/prices")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<PriceDto> getAllPrices() {
-//        log.info("Finding all prices");
-//        List<PriceDto> response = service.findAllPrice();
-//        return response;
-//    }
 
     @GetMapping("/currencies")
     @ResponseStatus(HttpStatus.OK)
@@ -39,7 +31,7 @@ public class CryptoCurrencyWatcherController {
 
     @GetMapping("/currencies/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PriceDto getAllCurrencies(@Valid @Positive @PathVariable Long id) {
+    public PriceDto getActualPrice(@Valid @Positive @PathVariable Long id) {
         log.info("Finding price for currencies id={}", id);
         return service.findActualPrice(id);
     }

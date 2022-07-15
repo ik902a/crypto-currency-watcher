@@ -22,14 +22,11 @@ public class CheckService {
         List<User> userList = userRepository.findUserByCurrency(newPrice.getCurrency().getId());
         for (User user : userList) {
             BigDecimal percent = newPrice.getPrice()
-                    .divide(user.getPrice().getPrice(), 2, RoundingMode.HALF_UP)
+                    .divide(user.getPrice().getPrice(), 4, RoundingMode.HALF_UP)
                     .multiply(ONE_HUNDRED)
-                    .subtract(ONE_HUNDRED);
+                    .subtract(ONE_HUNDRED)
+                    .setScale(2, RoundingMode.HALF_UP);
             BigDecimal percentInfo = percent;
-            log.info("Old price={}, new price={}, percent={}",
-                    user.getPrice().getPrice(),
-                    newPrice.getPrice(),
-                    percentInfo);
             if (percent.abs().compareTo(BigDecimal.ONE) > 0 ) {
                 log.warn("The Price of Currency {} for {} has changed by {}% since registration",
                         user.getPrice().getCurrency().getSymbol(),

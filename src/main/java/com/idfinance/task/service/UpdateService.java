@@ -53,7 +53,6 @@ public class UpdateService {
                 } else {
                     InputStream inputStream = entity.getContent();
                     String result = convertStreamToString(inputStream);
-                    log.info("RESPONSE: " + result);
                     inputStream.close();
                     if (!result.isBlank()) {
                         dataList = Arrays.asList(mapper.readValue(result, PriceData[].class));

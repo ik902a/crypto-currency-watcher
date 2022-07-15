@@ -26,15 +26,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class CryptoCurrencyService {
-    // Method for my testing
-//    @Transactional
-//    public List<PriceDto> findAllPrice() {
-//        log.info("Finding Prices in Service");
-//        List<Price> priceList = priceRepository.findAll();
-//        return priceList.stream()
-//                .map(priceMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
     private static final String RESOURCE_NOT_FOUND_BY_ID = "Resource not found by id";
     private static final String RESOURCE_NOT_FOUND_BY_SYMBOL = "Resource not found by symbol";
     private static final String RESOURCE_NOT_FOUND_BY_CURRENCY = "Resource not found by currency";
