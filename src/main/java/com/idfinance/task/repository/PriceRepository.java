@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface PriceRepository extends JpaRepository<Price, Long> {
 
-    @Query(value = "SELECT * FROM prices WHERE currency_id = ? ORDER BY updated DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM prices WHERE currency_id=? ORDER BY updated DESC LIMIT 1", nativeQuery = true)
     Optional<Price> findActualPrice(Long id);
-
-    Price findByCurrency(Currency currency);
 }

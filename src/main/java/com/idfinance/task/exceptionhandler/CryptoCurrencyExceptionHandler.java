@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import com.idfinance.task.exception.CryptoCurrencyException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,6 +42,16 @@ public class CryptoCurrencyExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(BAD_REQUEST)
     public ExceptionInformation constraintViolationExceptionHandler(ConstraintViolationException exception) {
+        log.error(exception.getMessage(), exception);
+        return new ExceptionInformation(
+                exception.getClass().getSimpleName(),
+                BAD_REQUEST,
+                exception.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(BAD_REQUEST)
+    public ExceptionInformation methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
         log.error(exception.getMessage(), exception);
         return new ExceptionInformation(
                 exception.getClass().getSimpleName(),

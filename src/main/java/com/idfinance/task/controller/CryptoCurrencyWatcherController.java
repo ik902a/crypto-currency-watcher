@@ -48,7 +48,7 @@ public class CryptoCurrencyWatcherController {
         return response;
     }
 
-    @GetMapping("/currencies/{id}")
+    @PostMapping("/notify")
     @ResponseStatus(HttpStatus.OK)
     public UserDto notify(@Valid @RequestBody UserDataDto data) {
         log.info("Finding price for currencies id={}", data.toString());

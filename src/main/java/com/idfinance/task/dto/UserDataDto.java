@@ -11,7 +11,7 @@ public class UserDataDto {
     @Pattern(regexp = "^[a-zA-Z\\s]*$")
     private String username;
     @NotBlank
-    @Pattern(regexp = "^[(BTC)?(ETH)?(SOL)?]$")
+    @Pattern(regexp = "^[\\p{Upper}]{3}$")
     private String symbol;
 
 }

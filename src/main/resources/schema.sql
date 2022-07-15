@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS prices (
       ON UPDATE NO ACTION);
 
 CREATE TABLE IF NOT EXISTS users (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `price_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   CONSTRAINT `price_id`
         FOREIGN KEY (`price_id`)
         REFERENCES prices (`id`)

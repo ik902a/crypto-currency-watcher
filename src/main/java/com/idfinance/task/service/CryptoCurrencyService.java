@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -28,6 +27,8 @@ import java.util.stream.Collectors;
 @Service
 public class CryptoCurrencyService {
     private static final String RESOURCE_NOT_FOUND_BY_ID = "Resource not found by id";
+    private static final String RESOURCE_NOT_FOUND_BY_SYMBOL = "Resource not found by symbol";
+    private static final String RESOURCE_NOT_FOUND_BY_CURRENCY = "Resource not found by curency";
     private final CurrencyRepository currencyRepository;
     private final PriceRepository priceRepository;
     private final UserRepository userRepository;
@@ -39,17 +40,16 @@ public class CryptoCurrencyService {
     public List<CurrencyDto> findAll() {
         log.info("Finding Currency in Service");
         List<Currency> currencyList = currencyRepository.findAll();
-        List<CurrencyDto> currencyDtoList = currencyList.stream()
-                .map(currency -> currencyMapper.toDto(currency))
+        return currencyList.stream()
+                .map(currencyMapper::toDto)
                 .collect(Collectors.toList());
-        return currencyDtoList;
     }
 
     @Transactional
     public PriceDto findActualPrice(Long id) {
         log.info("Finding actual price for Currency id={}", id);
-        Price price = priceRepository.findActualPrice(id).orElseThrow(
-                () -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_ID));
+        Price price = priceRepository.findActualPrice(id)
+                .orElseThrow(() -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_ID));
         return priceMapper.toDto(price);
     }
 
@@ -61,8 +61,10 @@ public class CryptoCurrencyService {
     }
 
     private User fillUser(UserDataDto data) {
-        Currency currency = currencyRepository.findBySymbol(data.getSymbol());
-        Price price = priceRepository.findByCurrency(currency);
+        Currency currency = currencyRepository.findBySymbol(data.getSymbol())
+                .orElseThrow(() -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_SYMBOL));
+        Price price = priceRepository.findActualPrice(currency.getId())
+                .orElseThrow(() -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_CURRENCY));
         User user = new User();
         user.setUsername(data.getUsername());
         user.setPrice(price);
@@ -74,9 +76,8 @@ public class CryptoCurrencyService {
     public List<PriceDto> findAllPrice() {
         log.info("Finding Prices in Service");
         List<Price> priceList = priceRepository.findAll();
-        List<PriceDto> priceDtoList = priceList.stream()
-                .map(price -> priceMapper.toDto(price))
+        return priceList.stream()
+                .map(priceMapper::toDto)
                 .collect(Collectors.toList());
-        return priceDtoList;
     }
 }
