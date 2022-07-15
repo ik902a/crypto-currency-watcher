@@ -16,6 +16,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,23 +42,22 @@ public class UpdateService {
     @Scheduled(fixedDelay = 60000)
     private void getActualPrice() {
         List<Currency> currencyList = currencyRepository.findAll();
-
         for (Currency currency : currencyList) {
             HttpGet getMethod = new HttpGet(TICKER_URL.replace(UNDERSCORE, currency.getId().toString()));
             List<PriceData> dataList = null;
             try {
                 HttpResponse response = httpClient.execute(getMethod);
                 HttpEntity entity = response.getEntity();
-                if (entity != null) {
+                if (entity == null) {
+                    log.warn(UNSUCCESSFUL_UPDATE);
+                } else {
                     InputStream inputStream = entity.getContent();
                     String result = convertStreamToString(inputStream);
                     log.info("RESPONSE: " + result);
                     inputStream.close();
-                    if (result != null) {
+                    if (!result.isBlank()) {
                         dataList = Arrays.asList(mapper.readValue(result, PriceData[].class));
                     }
-                } else {
-                    log.warn(UNSUCCESSFUL_UPDATE);
                 }
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
@@ -69,6 +69,7 @@ public class UpdateService {
         }
     }
 
+    @Transactional
     private void createActualPrice(PriceData data) {
         Price price = fillPrice(data);
         Price createdPrice = priceRepository.save(price);

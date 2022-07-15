@@ -26,9 +26,18 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class CryptoCurrencyService {
+    // Method for my testing
+//    @Transactional
+//    public List<PriceDto> findAllPrice() {
+//        log.info("Finding Prices in Service");
+//        List<Price> priceList = priceRepository.findAll();
+//        return priceList.stream()
+//                .map(priceMapper::toDto)
+//                .collect(Collectors.toList());
+//    }
     private static final String RESOURCE_NOT_FOUND_BY_ID = "Resource not found by id";
     private static final String RESOURCE_NOT_FOUND_BY_SYMBOL = "Resource not found by symbol";
-    private static final String RESOURCE_NOT_FOUND_BY_CURRENCY = "Resource not found by curency";
+    private static final String RESOURCE_NOT_FOUND_BY_CURRENCY = "Resource not found by currency";
     private final CurrencyRepository currencyRepository;
     private final PriceRepository priceRepository;
     private final UserRepository userRepository;
@@ -47,14 +56,15 @@ public class CryptoCurrencyService {
 
     @Transactional
     public PriceDto findActualPrice(Long id) {
-        log.info("Finding actual price for Currency id={}", id);
+        log.info("Finding actual Price for Currency id={}", id);
         Price price = priceRepository.findActualPrice(id)
                 .orElseThrow(() -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_ID));
         return priceMapper.toDto(price);
     }
 
+    @Transactional
     public UserDto create(UserDataDto data) {
-        log.info("Creating new user name={}", data.getUsername());
+        log.info("Creating new User name={}", data.getUsername());
         User user = fillUser(data);
         User createdUser = userRepository.save(user);
         return userMapper.toDto(createdUser);
@@ -69,15 +79,5 @@ public class CryptoCurrencyService {
         user.setUsername(data.getUsername());
         user.setPrice(price);
         return user;
-    }
-
-    // Method for my testing
-    @Transactional
-    public List<PriceDto> findAllPrice() {
-        log.info("Finding Prices in Service");
-        List<Price> priceList = priceRepository.findAll();
-        return priceList.stream()
-                .map(priceMapper::toDto)
-                .collect(Collectors.toList());
     }
 }

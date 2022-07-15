@@ -1,6 +1,5 @@
 package com.idfinance.task.repository;
 
-import com.idfinance.task.entity.Currency;
 import com.idfinance.task.entity.Price;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

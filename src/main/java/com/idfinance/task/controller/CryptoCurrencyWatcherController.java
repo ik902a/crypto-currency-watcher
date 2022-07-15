@@ -4,7 +4,6 @@ import com.idfinance.task.dto.CurrencyDto;
 import com.idfinance.task.dto.PriceDto;
 import com.idfinance.task.dto.UserDataDto;
 import com.idfinance.task.dto.UserDto;
-import com.idfinance.task.entity.Currency;
 import com.idfinance.task.service.CryptoCurrencyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,37 +21,33 @@ import java.util.List;
 @RestController
 public class CryptoCurrencyWatcherController {
     private CryptoCurrencyService service;
+    // Method for my testing
+//    @GetMapping("/prices")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<PriceDto> getAllPrices() {
+//        log.info("Finding all prices");
+//        List<PriceDto> response = service.findAllPrice();
+//        return response;
+//    }
 
     @GetMapping("/currencies")
     @ResponseStatus(HttpStatus.OK)
     public List<CurrencyDto> getAllCurrencies() {
         log.info("Finding all currencies");
-        List<CurrencyDto> response = service.findAll();
-        return response;
+        return service.findAll();
     }
 
     @GetMapping("/currencies/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PriceDto getAllCurrencies(@Valid @Positive(message = "Should be positive number") @PathVariable Long id) {
+    public PriceDto getAllCurrencies(@Valid @Positive @PathVariable Long id) {
         log.info("Finding price for currencies id={}", id);
-        PriceDto response = service.findActualPrice(id);
-        return response;
-    }
-
-    // Method for my testing
-    @GetMapping("/prices")
-    @ResponseStatus(HttpStatus.OK)
-    public List<PriceDto> getAllPrices() {
-        log.info("Finding all prices");
-        List<PriceDto> response = service.findAllPrice();
-        return response;
+        return service.findActualPrice(id);
     }
 
     @PostMapping("/notify")
     @ResponseStatus(HttpStatus.OK)
     public UserDto notify(@Valid @RequestBody UserDataDto data) {
-        log.info("Finding price for currencies id={}", data.toString());
-        UserDto response = service.create(data);
-        return response;
+        log.info("Adding new user userData={}", data.toString());
+        return service.create(data);
     }
 }

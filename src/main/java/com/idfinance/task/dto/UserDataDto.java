@@ -13,5 +13,4 @@ public class UserDataDto {
     @NotBlank
     @Pattern(regexp = "^[\\p{Upper}]{3}$")
     private String symbol;
-
 }

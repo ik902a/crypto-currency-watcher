@@ -12,5 +12,4 @@ public class PriceDto {
     private BigDecimal price;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime updated;
-//    private CurrencyDto currency;
 }
