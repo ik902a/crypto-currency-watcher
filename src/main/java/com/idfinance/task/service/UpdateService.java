@@ -30,9 +30,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class UpdateService {
-    private static final String TICKER_URL = "https://api.coinlore.net/api/ticker/?id=_";
-    private static final String UNDERSCORE = "_";
-    private static final String UNSUCCESSFUL_UPDATE = "Getting an actual price is unsuccessful";
+    private static final String TICKER_URL = "https://api.coinlore.net/api/ticker/?id=";
     private final CheckService checkService;
     private final CurrencyRepository currencyRepository;
     private final PriceRepository priceRepository;
@@ -43,13 +41,13 @@ public class UpdateService {
     private void getActualPrice() {
         List<Currency> currencyList = currencyRepository.findAll();
         for (Currency currency : currencyList) {
-            HttpGet getMethod = new HttpGet(TICKER_URL.replace(UNDERSCORE, currency.getId().toString()));
+            HttpGet getMethod = new HttpGet(TICKER_URL + currency.getId().toString());
             List<PriceData> dataList = null;
             try {
                 HttpResponse response = httpClient.execute(getMethod);
                 HttpEntity entity = response.getEntity();
                 if (entity == null) {
-                    log.warn(UNSUCCESSFUL_UPDATE);
+                    log.warn("Getting an actual price is unsuccessful");
                 } else {
                     InputStream inputStream = entity.getContent();
                     String result = convertStreamToString(inputStream);
@@ -60,7 +58,6 @@ public class UpdateService {
                 }
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
-                e.printStackTrace();
             }
             if (dataList != null) {
                 dataList.forEach(this::createActualPrice);
@@ -88,14 +85,13 @@ public class UpdateService {
     private String convertStreamToString(InputStream input) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         StringBuilder result = new StringBuilder();
-        String line = null;
+        String line;
         try (input) {
             while ((line = reader.readLine()) != null) {
                 result.append(line + "\n");
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            e.printStackTrace();
         }
         return result.toString();
     }

@@ -26,9 +26,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class CryptoCurrencyService {
-    private static final String RESOURCE_NOT_FOUND_BY_ID = "Resource not found by id";
-    private static final String RESOURCE_NOT_FOUND_BY_SYMBOL = "Resource not found by symbol";
-    private static final String RESOURCE_NOT_FOUND_BY_CURRENCY = "Resource not found by currency";
     private final CurrencyRepository currencyRepository;
     private final PriceRepository priceRepository;
     private final UserRepository userRepository;
@@ -49,7 +46,7 @@ public class CryptoCurrencyService {
     public PriceDto findActualPrice(Long id) {
         log.info("Finding actual Price for Currency id={}", id);
         Price price = priceRepository.findActualPrice(id)
-                .orElseThrow(() -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_ID));
+                .orElseThrow(() -> new CryptoCurrencyException("Resource not found by id"));
         return priceMapper.toDto(price);
     }
 
@@ -63,9 +60,9 @@ public class CryptoCurrencyService {
 
     private User fillUser(UserDataDto data) {
         Currency currency = currencyRepository.findBySymbol(data.getSymbol())
-                .orElseThrow(() -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_SYMBOL));
+                .orElseThrow(() -> new CryptoCurrencyException("Resource not found by symbol"));
         Price price = priceRepository.findActualPrice(currency.getId())
-                .orElseThrow(() -> new CryptoCurrencyException(RESOURCE_NOT_FOUND_BY_CURRENCY));
+                .orElseThrow(() -> new CryptoCurrencyException("Resource not found by currency"));
         User user = new User();
         user.setUsername(data.getUsername());
         user.setPrice(price);

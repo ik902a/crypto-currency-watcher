@@ -20,7 +20,7 @@ import java.util.List;
 @Validated
 @RestController
 public class CryptoCurrencyWatcherController {
-    private CryptoCurrencyService service;
+    private final CryptoCurrencyService service;
 
     @GetMapping("/currencies")
     @ResponseStatus(HttpStatus.OK)
